@@ -9,6 +9,7 @@ class HCP(Base):
     name = Column(String(255), nullable=False)
     specialty = Column(String(255))
     organization = Column(String(255))
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 class Interaction(Base):
     __tablename__ = "interactions"
