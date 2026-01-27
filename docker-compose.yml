@@ -23,6 +23,9 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+      cache_from:
+        - task-backend-1:latest
+    image: task-backend-1:latest
     container_name: task-backend-1
     restart: unless-stopped
     env_file:
@@ -41,6 +44,9 @@ services:
       dockerfile: Dockerfile
       args:
         - VITE_API_BASE_URL=${VITE_API_BASE_URL:-http://localhost:8000}
+      cache_from:
+        - task-frontend-1:latest
+    image: task-frontend-1:latest
     container_name: task-frontend-1
     restart: unless-stopped
     ports:

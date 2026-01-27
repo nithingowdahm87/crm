@@ -3,6 +3,7 @@ uvicorn[standard]
 sqlalchemy
 pymysql
 pydantic
+pydantic-settings
 python-dotenv
 langchain
 langchain-groq
