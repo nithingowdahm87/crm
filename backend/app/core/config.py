@@ -3,7 +3,14 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     PROJECT_NAME: str = "AI CRM HCP Module"
     BACKEND_PORT: int = 8000
-    CORS_ORIGINS: list[str] = ["http://localhost:3000"]
+    CORS_ORIGINS: list[str] = [
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://0.0.0.0:3000",
+        # Add your production frontend URL here
+        # "https://yourdomain.com",
+        # "https://www.yourdomain.com",
+    ]
 
     MYSQL_HOST: str = "mysql"
     MYSQL_PORT: int = 3306
@@ -15,8 +22,7 @@ class Settings(BaseSettings):
     GROQ_API_KEY: str = ""
     GROQ_MODEL: str = "gemma2-9b-it"
 
-    FRONTEND_PORT: int = 3000
-    VITE_API_BASE_URL: str = "http://localhost:8000"
+    VITE_API_BASE_URL: str = "http://task-backend-1:8000"  # Container service name for production
 
     class Config:
         env_file = ".env"

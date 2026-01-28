@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   mysql:
     image: mysql:8.0
@@ -9,7 +11,7 @@ services:
       MYSQL_USER: ${MYSQL_USER:-crm_user}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:-crm_password}
     ports:
-      - "3306:3306"
+      - "${MYSQL_PORT:-3306}:3306"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./mysql/init:/docker-entrypoint-initdb.d
@@ -18,6 +20,8 @@ services:
       interval: 5s
       timeout: 10s
       retries: 10
+    networks:
+      - crm-network
 
   backend:
     build:
@@ -29,11 +33,14 @@ services:
       - .env
     environment:
       - MYSQL_HOST=mysql
+      - CORS_ORIGINS=${CORS_ORIGINS:-["http://task-frontend-1:3000", "http://localhost:3000", "http://127.0.0.1:3000"]}
     ports:
       - "${BACKEND_PORT:-8000}:8000"
     depends_on:
       mysql:
         condition: service_healthy
+    networks:
+      - crm-network
 
   frontend:
     build:
@@ -47,6 +54,12 @@ services:
       - "${FRONTEND_PORT:-3000}:80"
     depends_on:
       - backend
+    networks:
+      - crm-network
 
 volumes:
   mysql_data:
+
+networks:
+  crm-network:
+    driver: bridge
