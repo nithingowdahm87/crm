@@ -74,7 +74,7 @@ export default function LogInteractionPage() {
 
   const onSubmitChat = async () => {
     const msg = chat.draft.trim()
-    if (!msg) return
+    if (!msg || !form.hcpId) return
     dispatch(appendChatMessage({ role: 'user', content: msg }))
     dispatch(setChatDraft(''))
     await dispatch(submitChatInteraction({ message: msg, hcpId: form.hcpId }))
@@ -307,7 +307,7 @@ export default function LogInteractionPage() {
                 fullWidth
                 size="small"
               />
-              <Button variant="contained" onClick={onSubmitChat} disabled={saving}>
+              <Button variant="contained" onClick={onSubmitChat} disabled={saving || !form.hcpId}>
                 Log
               </Button>
             </Stack>
