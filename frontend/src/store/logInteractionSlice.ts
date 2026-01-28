@@ -67,7 +67,18 @@ export const submitFormInteraction = createAsyncThunk(
   'logInteraction/submitForm',
   async (formData: FormState, { rejectWithValue }) => {
     try {
-      const response = await api.post('/interactions', formData)
+      const payload = {
+        hcp_id: formData.hcpId,
+        interaction_type: formData.interactionType || null,
+        sentiment: formData.sentiment || null,
+        topics: formData.topics || null,
+        outcomes: formData.outcomes || null,
+        follow_up_actions: formData.followUpActions || null,
+        attendees: formData.attendees || null,
+        materials: formData.materials.length ? formData.materials.join(', ') : null,
+        samples: formData.samples.length ? formData.samples.join(', ') : null,
+      }
+      const response = await api.post('/interactions', payload)
       return response.data
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.detail || 'Submission failed')
