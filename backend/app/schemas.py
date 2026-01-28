@@ -1,6 +1,5 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 from typing import List, Optional, Any
-from datetime import datetime
 
 class HCPBase(BaseModel):
     name: str
@@ -8,9 +7,10 @@ class HCPBase(BaseModel):
     organization: Optional[str] = None
 
 class HCP(HCPBase):
-    model_config = ConfigDict(from_attributes=True)
-    
     id: int
+
+    class Config:
+        from_attributes = True
 
 class InteractionBase(BaseModel):
     hcp_id: int
@@ -27,11 +27,12 @@ class InteractionCreate(InteractionBase):
     pass
 
 class Interaction(InteractionBase):
-    model_config = ConfigDict(from_attributes=True)
-    
     id: int
     created_at: Optional[str] = None
     updated_at: Optional[str] = None
+
+    class Config:
+        from_attributes = True
 
 class AgentChatRequest(BaseModel):
     message: str
@@ -51,8 +52,9 @@ class AgentEditResponse(BaseModel):
     interaction: Optional[Interaction] = None
 
 class ToolRun(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-    
     tool: str
     output: Any
     created_at: Optional[str] = None
+
+    class Config:
+        from_attributes = True
